@@ -1,0 +1,25 @@
+name: Build Kivy APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v4
+
+    - name: Compilar APK con Buildozer
+      uses: ArtemSBulgakov/buildozer-action@v1
+      id: buildozer
+      with:
+        command: buildozer -v android debug
+
+    - name: Subir APK como artefacto
+      uses: actions/upload-artifact@v4
+      with:
+        name: package
+        path: bin/*.apk
